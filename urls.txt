@@ -1,0 +1,7 @@
+https://github.com/badmojr/1Hosts/releases/download/latest/1hosts-Pro_adblock.txt
+https://github.com/badmojr/1Hosts/releases/download/latest/1hosts-Pro_domains.txt
+https://github.com/badmojr/1Hosts/releases/download/latest/1hosts-Pro_hosts.txt
+
+https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/light.txt
+https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/domains/light.txt
+https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/hosts/light.txt
