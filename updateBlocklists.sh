@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# where the lists will be downloaded 
 mkdir -p "./dl_blocklists"
+mkdir -p "./merged_lists"
 
+# for merging the lists on the same categories
 categories=("adblock" "domain" "host")
 
 download_lists() {
@@ -12,21 +15,24 @@ download_lists() {
 	done
 }
 
+# will make it loop through the categories later...
 merge_lists() {
 	echo "Merging adblock lists..."
 	
 	adblock_lists=()
 
+	# this might be a little silly but it seems like it works
 	while IFS= read -r -d '' file; do
 		adblock_lists+=("$file")
 	done < <(find "./dl_blocklists" -type f -name "*adblock*" -print0)
 
 	
-	for f in "${adblock_lists[@]}"; do
-		echo "$f"
-	done
+	# for f in "${adblock_lists[@]}"; do
+	# 	echo "$f"
+	# done
 
-	cat "${adblock_lists[@]}" | sort | uniq > "./adblock_merged.txt"
+	# concatenate the lists
+	cat "${adblock_lists[@]}" | sort | uniq > "./merged_lists/adblock_merged.txt"
 }
 
 download_lists
