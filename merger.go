@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"errors"
 	"log"
 	"os"
 	"path/filepath"
@@ -10,19 +9,16 @@ import (
 
 func MergeBlocklists(category string, fileNames []string) {
 	// create a directory for each category
-	ex, err := os.Executable()
-	if err != nil {
-		log.Fatal(err)
-	}
-	exPath := filepath.Dir(ex)
+	exPath := filepath.Dir(FindExePath())
 	merged_dir := filepath.Join(exPath, "mergedLists", category)
-	if !checkPathExist(merged_dir) {
-		err = os.MkdirAll(merged_dir, os.ModePerm)
+	if !CheckPathExists(merged_dir) {
+		err := os.MkdirAll(merged_dir, os.ModePerm)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
+	// This might not be right :S
 	merge_map := make(map[int]string)
 	outIndex := 0
 	for _, fN := range fileNames {
@@ -56,18 +52,11 @@ func MergeBlocklists(category string, fileNames []string) {
 	}
 	defer merged.Close()
 
+	// Write the map into the empty file
 	for _, v := range merge_map {
 		_, err := merged.WriteString(v + "\n")
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
-}
-
-func checkPathExist(path string) bool {
-	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
-		return false
-	}
-
-	return true
 }

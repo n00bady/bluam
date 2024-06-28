@@ -2,9 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
+)
+
+const (
+	dl_dir = "dl_blocklists"
 )
 
 func main() {
@@ -16,12 +19,10 @@ func main() {
 		}
 	}
 
-	ex, err := os.Executable()
-	if err != nil {
-		log.Fatal(err)
-	}
-	exPath := filepath.Dir(ex)
-	dl_path := filepath.Join(exPath, "dl_blocklists")
+	// get exec path and from there find the dl_blocklists directory 
+	// that all the blocklists are saved in
+	exPath := filepath.Dir(FindExePath())
+	dl_path := filepath.Join(exPath, dl_dir) 
 	subDirs, _ := os.ReadDir(dl_path)
 	fmt.Println("Merging blocklists...")
 	for _, d := range subDirs {

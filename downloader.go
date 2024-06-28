@@ -19,7 +19,7 @@ func DownloadBlocklist(category string, url_link string) {
 	}
 	exPath := filepath.Dir(ex)
 	dl_path := filepath.Join(exPath, "dl_blocklists", category)
-	if !checkPathExist(dl_path) {
+	if !CheckPathExists(dl_path) {
 		err = os.MkdirAll(dl_path, os.ModePerm)
 		if err != nil {
 			log.Fatal(err)
