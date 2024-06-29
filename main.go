@@ -13,6 +13,7 @@ const (
 func main() {
 	fmt.Println("Updating the blocklists...")
 
+	// Should i delete the older stuff in the dl_blocklists if they exist ?
 	for category, url_links := range urls_map {
 		for _, link := range url_links {
 			DownloadBlocklist(category, link)
@@ -35,7 +36,7 @@ func main() {
 			}
 		}
 		MergeBlocklists(cat, locations)
-		fmt.Println(cat, "blocklists merged!")
+		fmt.Println("\t", cat, "blocklists merged!")
 		locations = nil
 	}
 }

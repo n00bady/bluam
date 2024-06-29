@@ -4,23 +4,58 @@ package main
 // expand the already existing []string variables for more sources
 // probably not the most convenient way but seems to work fine...
 
-var adblocklists = []string{
-	"https://github.com/badmojr/1Hosts/releases/download/latest/1hosts-Pro_adblock.txt",
-	"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/light.txt",
-}
+var (
+	adultcontentblocklists = []string{
+		
+	}
 
-var domainsblocklists = []string{
-	"https://github.com/badmojr/1Hosts/releases/download/latest/1hosts-Pro_domains.txt",
-	"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/domains/light.txt",
-}
+	cryptoblocklists = []string{
 
-var hostsblocklists = []string{
-	"https://github.com/badmojr/1Hosts/releases/download/latest/1hosts-Pro_hosts.txt",
-	"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/hosts/light.txt",
-}
+	}
+
+	socialmediablocklists = []string{
+
+	}
+
+	surveillancebllocklists = []string{
+
+	}
+
+	adsblocklists = []string{
+		"https://github.com/badmojr/1Hosts/releases/download/latest/1hosts-Pro_adblock.txt",
+		"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/light.txt",
+	}
+
+	drugsblocklists = []string{
+
+	}
+
+	fakenewsblocklists = []string{
+
+	}
+
+	fraudblocklists = []string{
+
+	}
+
+	gamblingblocklists = []string{
+
+	}
+
+	malwareblocklists = []string{
+
+	}
+)
 
 var urls_map = map[string][]string{
-	"adblock": adblocklists,
-	"domains": domainsblocklists,
-	"hosts":   hostsblocklists,
+	"adultcontent": adultcontentblocklists,
+	"crypto": cryptoblocklists,
+	"socialmedia": socialmediablocklists,
+	"surveillance": surveillancebllocklists,
+	"adsblock": adsblocklists,
+	"drugs": drugsblocklists,
+	"fakenews": fakenewsblocklists,
+	"fraud": fraudblocklists,
+	"gambling": gamblingblocklists,
+	"malware": malwareblocklists,
 }
