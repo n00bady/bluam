@@ -9,6 +9,7 @@ import (
 
 func MergeBlocklists(category string, fileNames []string) {
 	// create a directory for each category
+	// maybe I should just dump them all in the mergedLists dir and not create subdirs
 	exPath := filepath.Dir(FindExePath())
 	merged_dir := filepath.Join(exPath, "mergedLists", category)
 	if !CheckPathExists(merged_dir) {
@@ -18,12 +19,11 @@ func MergeBlocklists(category string, fileNames []string) {
 		}
 	}
 
-	// This might not be right :S
-	merge_map := make(map[int]string)
-	outIndex := 0
+	// read each file line by line and creates a uniq map with each line as key
+	// also the toPlainDomain() function cleans most of the prefixes that different
+	// blocklists tend to have like # and ! for comments/headers and || for all subdomains
+	merge_map := make(map[string]bool)
 	for _, fN := range fileNames {
-		// read files
-		line := 0
 		f, err := os.Open(fN)
 		if err != nil {
 			log.Fatal(err)
@@ -32,13 +32,7 @@ func MergeBlocklists(category string, fileNames []string) {
 		fScanner.Split(bufio.ScanLines)
 		for fScanner.Scan() {
 			entry := fScanner.Text()
-			if merge_map[line] == entry {
-				continue
-			} else {
-				merge_map[outIndex] = entry
-			}
-			line++
-			outIndex++
+			merge_map[toPlainDomain(entry)] = true
 		}
 		defer f.Close()
 	}
@@ -53,8 +47,9 @@ func MergeBlocklists(category string, fileNames []string) {
 	defer merged.Close()
 
 	// Write the map into the empty file
-	for _, v := range merge_map {
-		_, err := merged.WriteString(v + "\n")
+	// Should we care about writing them in alphabetical order ???
+	for k := range merge_map {
+		_, err := merged.WriteString(k + "\n")
 		if err != nil {
 			log.Fatal(err)
 		}
