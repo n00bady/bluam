@@ -23,11 +23,11 @@ var (
 
 	adsblocklists = []string{
 		"https://o0.pages.dev/Pro/domains.txt",
-		"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/light.txt", 
+		"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/light.txt",
 		"https://adaway.org/hosts.txt",
 		"https://v.firebog.net/hosts/AdguardDNS.txt",
 		"https://v.firebog.net/hosts/Admiral.txt",
-		"https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt",	
+		"https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt",
 		"https://v.firebog.net/hosts/Easylist.txt",
 		"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts",
 		"https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts",

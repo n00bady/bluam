@@ -1,0 +1,24 @@
+{
+	"LogBlocked": true,
+	"LogAll": true,
+	"IP": "127.0.0.1",
+	"Port": 53,
+	"DNSServers": [
+		"1.1.1.1",
+		"8.8.8.8",
+		"9.9.9.9"
+	],
+	"ListPath:": "./dns",
+	"Lists": [
+		{
+			"Tag": "adult",
+			"URL": "/home/user/list.txt",
+			"Enabled": true
+		},
+		{
+			"Tag": "adult",
+			"URL": "https://list.com/file",
+			"Enabled": true
+		}
+	]
+}
