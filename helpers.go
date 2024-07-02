@@ -10,22 +10,29 @@ import (
 // takes a string and checks for a number of prefixes and suffixes then removes them
 // and returns the string with trimed spaces
 func toPlainDomain(s string) string {
-	prefixes := []string{"#", "!", "*", "||", "0.0.0.0", "127.0.0.1"}
-	suffixes := []string{"^"}
 
-	for _, prefix := range prefixes {
-		if strings.HasPrefix(s, prefix) {
-			s = strings.TrimSpace(s[len(prefix):])
-		}
+	switch {
+	case strings.HasPrefix(s, ":"):
+		return ""
+	case strings.HasPrefix(s, "["):
+		return ""
+	case strings.HasPrefix(s, "#"):
+		return ""
+	case strings.HasPrefix(s, "!"):
+		return ""
+	case strings.HasPrefix(s, "*"):
+		return strings.TrimSpace(s[1:])
+	case strings.HasPrefix(s, "||"):
+		return strings.TrimSpace(s[2:])
+	case strings.HasPrefix(s, "0.0.0.0"):
+		return strings.TrimSpace(s[len("0.0.0.0"):])
+	case strings.HasPrefix(s, "127.0.0.1"):
+		return strings.TrimSpace(s[len("127.0.0.1"):])
+	case strings.HasSuffix(s, "^"):
+		return strings.TrimSpace(s[0 : len(s)-1])
+	default:
+		return strings.TrimSpace(s)
 	}
-
-	for _, suffix := range suffixes {
-		if strings.HasSuffix(s, suffix) {
-			s = strings.TrimSpace(s[0 : len(s)-len(suffix)])
-		}
-	}
-
-	return strings.TrimSpace(s)
 }
 
 // take a directory path and returns false if doesn't exist, true if it does
