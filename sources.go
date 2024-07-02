@@ -10,11 +10,14 @@ package main
 var (
 	adultcontentblocklists = []string{
 		"https://nsfw.oisd.nl/",
+		"https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-only/hosts",
 	}
 
 	cryptoblocklists = []string{}
 
-	socialmediablocklists = []string{}
+	socialmediablocklists = []string{
+		"https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social-only/hosts",
+	}
 
 	surveillancebllocklists = []string{}
 
@@ -37,7 +40,9 @@ var (
 
 	drugsblocklists = []string{}
 
-	fakenewsblocklists = []string{}
+	fakenewsblocklists = []string{
+		"https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-only/hosts",
+	}
 
 	fraudblocklists = []string{
 		"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/fake.txt",
