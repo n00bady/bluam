@@ -8,15 +8,7 @@ import (
 )
 
 func MergeBlocklists(category string, fileNames []string) {
-	// create a directory for each category
-	// maybe I should just dump them all in the mergedLists dir and not create subdirs
-	// exPath := filepath.Dir(FindExePath())
-	// merged_dir := filepath.Join(exPath, "mergedLists", category)
 	merged_dir := filepath.Join(config.ListPath, "merged_Lists")
-	err := os.Mkdir(merged_dir, os.ModePerm)
-	if err != nil {
-		log.Fatal(err)
-	}
 	if !CheckPathExists(merged_dir) {
 		err := os.Mkdir(merged_dir, os.ModePerm)
 		if err != nil {
