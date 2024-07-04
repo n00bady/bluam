@@ -27,13 +27,13 @@ type blockLists struct {
 func LoadConfig(path string) *DNSConfig {
 	bytes, err := os.ReadFile(path)
 	if err != nil {
-		log.Fatal("Error reading config file:", err)
+		log.Fatal("Error reading config file: ", err)
 	}
 
 	var config DNSConfig
 	err = json.Unmarshal(bytes, &config)
 	if err != nil {
-		log.Fatal("Error unmarshaling json:", err)
+		log.Fatal("Error unmarshaling json: ", err)
 	}
 
 	return &config

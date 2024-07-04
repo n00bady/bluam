@@ -7,6 +7,9 @@ import (
 	"path/filepath"
 )
 
+// Take a a string (category) and a slice of strings for the filenames 
+// creates a new file with the name of the category in ./dns/merged_Lists ,
+// iterates of the merge_map and writes in that file.
 func MergeBlocklists(category string, fileNames []string) {
 	merged_dir := filepath.Join(config.ListPath, "merged_Lists")
 	if !CheckPathExists(merged_dir) {
