@@ -27,7 +27,7 @@ func DownloadBlocklist(category string, url_link string) {
 	// if it's a filepath then it just get copied to the dl_blocklists/
 	// else I assume it's a URL and make a request
 	if CheckPathExists(url_link) {
-		fmt.Println("It's a local file!")
+		// fmt.Println("It's a local file!")
 		source, err := os.Open(url_link)
 		if err != nil {
 			log.Fatal(err)
@@ -46,7 +46,7 @@ func DownloadBlocklist(category string, url_link string) {
 		}
 		fmt.Printf("Copied %s in %s with size %d\n", url_link, dl_path+source.Name(), size)
 	} else {
-		fmt.Println("It's a URL!")
+		// fmt.Println("It's a URL!")
 		fullURLFile := url_link
 
 		fileURL, err := url.Parse(fullURLFile)
@@ -83,10 +83,10 @@ func DownloadBlocklist(category string, url_link string) {
 		// check if it's a text file and if not skip it
 		// Is there a better way to check it ???
 		contentType := resp.Header.Get("Content-Type")
-		fmt.Println("Content-Type: ", contentType)
+		// fmt.Println("Content-Type: ", contentType)
 		if strings.Contains(contentType, "text/plain") {
 			size, _ := io.Copy(file, resp.Body)
-			fmt.Printf("Downloaded %s with size %d\n\n", fileName, size)
+			fmt.Printf("Downloaded %s with size %d\n", fileName, size)
 		} else {
 			fmt.Printf("Skiping %s not a text file!\n\n", url_link)
 		}

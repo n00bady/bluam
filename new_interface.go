@@ -9,19 +9,20 @@ import (
 )
 
 type DNSConfig struct {
-	LogBlocked bool         `json:"LogBlocked"`
-	LogAll     bool         `json:"LogAll"`
-	IP         string       `json:"IP"`
-	Port       int          `json:"Port"`
-	DNSServers []string     `json:"DNSServers"`
-	ListPath   string       `json:"ListPath"`
-	Lists      []blockLists `json:"Lists"`
+	LogBlocked bool        `json:"LogBlocked"`
+	LogAll     bool        `json:"LogAll"`
+	IP         string      `json:"IP"`
+	Port       int         `json:"Port"`
+	DNSServers []string    `json:"DNSServers"`
+	ListPath   string      `json:"ListPath"`
+	Lists      []blocklist `json:"Categories"`
 }
 
-type blockLists struct {
-	Tag     string `json:"Tag"`
-	Url     string `json:"URL"`
-	Enabled bool   `json:"Enabled"`
+type blocklist struct {
+	Tag            string   `json:"Tag"`
+	Sources        []string `json:"Sources"`
+	MergedLocation string   `json:"MergedLocation"`
+	Enabled        bool     `json:"Enabled"`
 }
 
 func LoadConfig(path string) *DNSConfig {
@@ -45,7 +46,9 @@ func UpdateListsAndMergeTags(config *DNSConfig) {
 	// because if one of the list sources is temporary
 	// or permantly unavailable we can still use the last version
 	for _, l := range config.Lists {
-		DownloadBlocklist(l.Tag, l.Url)
+		for _, s := range l.Sources {
+			DownloadBlocklist(l.Tag, s)
+		}
 	}
 
 	// reads all the the files in each category in downloaded blocklists
