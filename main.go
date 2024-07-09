@@ -6,7 +6,10 @@ import (
 	"os"
 )
 
-var config *DNSConfig
+var (
+	config     *DNSConfig
+	configPath = "./blocking.json"
+)
 
 // Custom usage message
 const usgMsg = "Commands:\n" +
@@ -29,10 +32,10 @@ func main() {
 	remCategory := removeCmd.String("c", "", "Choose a category: ads, adult, etc...")
 
 	enableCmd := flag.NewFlagSet("enable", flag.ExitOnError)
-	enableCategory := enableCmd.String("c", "", "Choose a category to enable.")
+	// enableCategory := enableCmd.String("c", "", "Choose a category to enable.")
 
 	disableCmd := flag.NewFlagSet("disable", flag.ExitOnError)
-	disableCategory := disableCmd.String("c", "", "Choose a category to disable.")
+	// disableCategory := disableCmd.String("c", "", "Choose a category to disable.")
 
 	flag.Usage = func() {
 		fmt.Printf("Usage: %s [command] [args]\n", os.Args[0])
@@ -66,12 +69,18 @@ func main() {
 		// remove function
 	case "enable":
 		enableCmd.Parse(os.Args[2:])
-		fmt.Printf("Enabling category: %s\n", *enableCategory)
-		// enable function
+		fmt.Printf("Enabling category: \n")
+		for _, c := range disableCmd.Args() {
+			fmt.Printf("\t%s", c)
+		}
+		EnableList(config, enableCmd.Args())
 	case "disable":
 		disableCmd.Parse(os.Args[2:])
-		fmt.Printf("Disabling category: %s\n", *disableCategory)
-		// disable function
+		fmt.Printf("Disabling categories: \n")
+		for _, c := range disableCmd.Args() {
+			fmt.Printf("\t%s", c)
+		}
+		DisableList(config, disableCmd.Args())
 	default:
 		flag.Usage()
 		os.Exit(1)

@@ -71,10 +71,56 @@ func UpdateListsAndMergeTags(config *DNSConfig) {
 	}
 }
 
-func DisableList(config *DNSConfig) {
+func DisableList(config *DNSConfig, categories []string) {
+	for _, c := range categories {
+		for i, l := range config.Lists {
+			if l.Tag == c {
+				fmt.Println("Found category: ", c, "Disabling...")
+				config.Lists[i].Enabled = false
+				bytes, err := json.MarshalIndent(config, "", "\t")
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				f, err := os.Create(configPath)
+				if err != nil {
+					log.Fatal(err)
+				}
+				defer f.Close()
+				_, err = f.Write(bytes)
+				if err != nil {
+					log.Fatal(err)
+				}
+				fmt.Println(c, "disabled succefully!")
+			}
+		}
+	}
 }
 
-func EnableList(config *DNSConfig) {
+func EnableList(config *DNSConfig, categories []string) {
+	for _, c := range categories {
+		for i, l := range config.Lists {
+			if l.Tag == c {
+				fmt.Println("Found category: ", c, "Enabling...")
+				config.Lists[i].Enabled = true
+				bytes, err := json.MarshalIndent(config, "", "\t")
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				f, err := os.Create(configPath)
+				if err != nil {
+					log.Fatal(err)
+				}
+				defer f.Close()
+				_, err = f.Write(bytes)
+				if err != nil {
+					log.Fatal(err)
+				}
+				fmt.Println(c, "enabled succefully!")
+			}
+		}
+	}
 }
 
 // keyb1nd makes this
