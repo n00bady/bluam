@@ -7,13 +7,12 @@ import (
 	"path/filepath"
 )
 
-// Take a a string (category) and a slice of strings for the filenames 
+// Take a a string (category) and a slice of strings for the filenames
 // creates a new file with the name of the category in ./dns/merged_Lists ,
 // iterates of the merge_map and writes in that file.
-func MergeBlocklists(category string, fileNames []string) {
-	merged_dir := filepath.Join(config.ListPath, "merged_Lists")
-	if !CheckPathExists(merged_dir) {
-		err := os.Mkdir(merged_dir, os.ModePerm)
+func MergeBlocklists(path string, category string, fileNames []string) {
+	if !CheckPathExists(path) {
+		err := os.Mkdir(path, os.ModePerm)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -22,24 +21,25 @@ func MergeBlocklists(category string, fileNames []string) {
 	// read each file line by line and creates a uniq map with each line as key
 	// also the toPlainDomain() function cleans most of the prefixes that different
 	// blocklists tend to have like # and ! for comments/headers and || for all subdomains
-	merge_map := make(map[string]bool)
+	merge_map := make(map[string]struct{})
 	for _, fN := range fileNames {
 		f, err := os.Open(fN)
 		if err != nil {
 			log.Fatal(err)
 		}
+		defer f.Close()
+
 		fScanner := bufio.NewScanner(f)
 		fScanner.Split(bufio.ScanLines)
 		for fScanner.Scan() {
 			entry := fScanner.Text()
-			merge_map[toPlainDomain(entry)] = true
+			merge_map[toPlainDomain(entry)] = struct{}{}
 		}
-		defer f.Close()
 	}
 
 	// Create an empty output file
 	fileName := category + ".txt"
-	location := filepath.Join(merged_dir, fileName)
+	location := filepath.Join(path, fileName)
 	merged, err := os.Create(location)
 	if err != nil {
 		log.Fatal(err)

@@ -1,28 +1,31 @@
 package main
 
 import (
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 type DNSConfig struct {
-	LogBlocked bool        `json:"LogBlocked"`
-	LogAll     bool        `json:"LogAll"`
-	IP         string      `json:"IP"`
-	Port       int         `json:"Port"`
-	DNSServers []string    `json:"DNSServers"`
-	ListPath   string      `json:"ListPath"`
-	Lists      []blocklist `json:"Categories"`
+	LogBlocked         bool     `json:"LogBlocked"`
+	LogAll             bool     `json:"LogAll"`
+	IP                 string   `json:"IP"`
+	Port               int      `json:"Port"`
+	DNSServers         []string `json:"DNSServers"`
+	Sources            []Source `json:"Sources"`
+	DisabledCategories []string `json:"DisabledCategories"`
+	AutoUpdate         bool     `json:"AutoUpdate"`
 }
 
-type blocklist struct {
-	Tag            string   `json:"Tag"`
-	Sources        []string `json:"Sources"`
-	MergedLocation string   `json:"MergedLocation"`
-	Enabled        bool     `json:"Enabled"`
+type Source struct {
+	Updated  time.Time `json:"Updated"`
+	Category string    `json:"Category"`
+	Enabled  bool      `json:"Enabled"`
+	Source   string    `json:"Source"`
 }
 
 func LoadConfig(path string) *DNSConfig {
@@ -40,43 +43,48 @@ func LoadConfig(path string) *DNSConfig {
 	return &config
 }
 
-func UpdateListsAndMergeTags(config *DNSConfig) {
+func encodeListURLToFileName(url string) string {
+	out := make([]byte, 0)
+	_ = hex.Encode(out, []byte(url))
+	return string(out)
+}
+
+func UpdateConfigAndMergeTags(config *DNSConfig, path string) {
+	// do re-merge and config update without download
+}
+
+func UpdateListsAndMergeTags(config *DNSConfig, path string) {
 	// imo it's better to overwrite the old blocklists
 	// rather than delete and then re-download
 	// because if one of the list sources is temporary
 	// or permantly unavailable we can still use the last version
-	for _, l := range config.Lists {
-		for _, s := range l.Sources {
-			DownloadBlocklist(l.Tag, s)
-		}
+	dlPath := filepath.Join(path, "originals")
+	for _, l := range config.Sources {
+		DownloadBlocklist(dlPath, l.Source)
 	}
 
 	// reads all the the files in each category in downloaded blocklists
 	// directory and merge them
-	dl_path := filepath.Join(config.ListPath, "dl_blocklists")
-	subDirs, _ := os.ReadDir(dl_path)
 	fmt.Println("Merging blocklists...")
-	for _, d := range subDirs {
-		cat := d.Name()
-		var locations []string
-		if d.IsDir() {
-			subItems, _ := os.ReadDir(filepath.Join(dl_path, d.Name()))
-			for _, fN := range subItems {
-				locations = append(locations, filepath.Join(dl_path, d.Name(), fN.Name()))
-			}
-		}
-		MergeBlocklists(cat, locations)
-		fmt.Println("\t", cat, "blocklists merged!")
-		locations = nil
+	categoryMap := make(map[string][]string)
+	for _, v := range config.Sources {
+		sourcePath := encodeListURLToFileName(v.Source)
+		categoryMap[v.Category] = append(categoryMap[v.Category], sourcePath)
+	}
+
+	mergePath := filepath.Join(path, "merged")
+	for i, v := range categoryMap {
+		MergeBlocklists(mergePath, i, v)
+		fmt.Println("\t", i, "blocklists merged!")
 	}
 }
 
 func DisableList(config *DNSConfig, categories []string) {
 	for _, c := range categories {
-		for i, l := range config.Lists {
-			if l.Tag == c {
+		for i, l := range config.Sources {
+			if l.Category == c {
 				fmt.Println("Found category: ", c, "Disabling...")
-				config.Lists[i].Enabled = false
+				config.Sources[i].Enabled = false
 				bytes, err := json.MarshalIndent(config, "", "\t")
 				if err != nil {
 					log.Fatal(err)
@@ -99,10 +107,10 @@ func DisableList(config *DNSConfig, categories []string) {
 
 func EnableList(config *DNSConfig, categories []string) {
 	for _, c := range categories {
-		for i, l := range config.Lists {
-			if l.Tag == c {
+		for i, l := range config.Sources {
+			if l.Category == c {
 				fmt.Println("Found category: ", c, "Enabling...")
-				config.Lists[i].Enabled = true
+				config.Sources[i].Enabled = true
 				bytes, err := json.MarshalIndent(config, "", "\t")
 				if err != nil {
 					log.Fatal(err)

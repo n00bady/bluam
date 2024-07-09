@@ -9,9 +9,10 @@
 		"9.9.9.9"
 	],
 	"ListPath": "./dns",
-	"Categories": [
+	"DisabledCategories": [],
+	"Sources": [
 		{
-			"Tag": "adult",
+			"Category": "adult",
 			"Sources": [
 				"https://nsfw.oisd.nl/",
 				"https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-only/hosts"
@@ -20,15 +21,13 @@
 			"Enabled": true
 		},
 		{
-			"Tag": "crypto",
-			"Sources": [
-
-			],
+			"Category": "crypto",
+			"Sources": [],
 			"MergedLocation": "./dns/merged/crypto.txt",
 			"Enabled": true
 		},
 		{
-			"Tag": "socialmedia",
+			"Category": "socialmedia",
 			"Sources": [
 				"https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social-only/hosts"
 			],
@@ -36,15 +35,13 @@
 			"Enabled": true
 		},
 		{
-			"Tag": "surveillance",
-			"Sources": [
-
-			],
+			"Category": "surveillance",
+			"Sources": [],
 			"MergedLocation": "./dns/merged/surveillance.txt",
 			"Enabled": true
 		},
 		{
-			"Tag": "ads",
+			"Category": "ads",
 			"Sources": [
 				"https://o0.pages.dev/Pro/domains.txt",
 				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/light.txt",
@@ -65,15 +62,13 @@
 			"Enabled": true
 		},
 		{
-			"Tag": "drugs",
-			"Sources": [
-
-			],
+			"Category": "drugs",
+			"Sources": [],
 			"MergedLocation": "./dns/merged/drugs.txt",
 			"Enabled": true
 		},
 		{
-			"Tag": "fakenews",
+			"Category": "fakenews",
 			"Sources": [
 				"https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-only/hosts"
 			],
@@ -81,7 +76,7 @@
 			"Enabled": true
 		},
 		{
-			"Tag": "fraud",
+			"Category": "fraud",
 			"Sources": [
 				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/fake.txt"
 			],
@@ -89,7 +84,7 @@
 			"Enabled": true
 		},
 		{
-			"Tag": "gambling",
+			"Category": "gambling",
 			"Sources": [
 				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/gambling.txt"
 			],
@@ -97,7 +92,7 @@
 			"Enabled": true
 		},
 		{
-			"Tag": "malware",
+			"Category": "malware",
 			"Sources": [
 				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/hoster.txt",
 				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/dyndns.txt",
