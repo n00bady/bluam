@@ -8,111 +8,243 @@
 		"8.8.8.8",
 		"9.9.9.9"
 	],
-	"ListPath": "./dns",
 	"DisabledCategories": [],
+	"AutoUpdate": true,
 	"Sources": [
 		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "adult",
-			"Sources": [
-				"https://nsfw.oisd.nl/",
-				"https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-only/hosts"
-			],
-			"MergedLocation": "./dns/merged/adult.txt",
-			"Enabled": true
+			"Enabled": true,
+			"Source": "https://nsfw.oisd.nl/"
 		},
 		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "adult",
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-only/hosts"
+
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "crypto",
-			"Sources": [],
-			"MergedLocation": "./dns/merged/crypto.txt",
-			"Enabled": true
+			"Enabled": true,
+			"Source": ""
 		},
 		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "socialmedia",
-			"Sources": [
-				"https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social-only/hosts"
-			],
-			"MergedLocation": "./dns/merged/socialmedia.txt",
-			"Enabled": true
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social-only/hosts"
 		},
 		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "surveillance",
-			"Sources": [],
-			"MergedLocation": "./dns/merged/surveillance.txt",
-			"Enabled": true
+			"Enabled": true,
+			"Source": ""
 		},
 		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "ads",
-			"Sources": [
-				"https://o0.pages.dev/Pro/domains.txt",
-				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/light.txt",
-				"https://adaway.org/hosts.txt",
-				"https://v.firebog.net/hosts/AdguardDNS.txt",
-				"https://v.firebog.net/hosts/Admiral.txt",
-				"https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt",
-				"https://v.firebog.net/hosts/Easylist.txt",
-				"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts",
-				"https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts",
-				"https://v.firebog.net/hosts/Easyprivacy.txt",
-				"https://v.firebog.net/hosts/Prigent-Ads.txt",
-				"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts",
-				"https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt",
-				"https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt"
-			],
-			"MergedLocation": "./dns/merged/ads.txt",
-			"Enabled": true
+			"Enabled": true,
+			"Source": "https://o0.pages.dev/Pro/domains.txt"
 		},
 		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/light.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://adaway.org/hosts.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://v.firebog.net/hosts/AdguardDNS.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://v.firebog.net/hosts/Admiral.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://v.firebog.net/hosts/Easylist.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://v.firebog.net/hosts/Easyprivacy.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://v.firebog.net/hosts/Prigent-Ads.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Enabled": true,
+			"Source": "https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "drugs",
-			"Sources": [],
-			"MergedLocation": "./dns/merged/drugs.txt",
-			"Enabled": true
+			"Enabled": true,
+			"Source": ""
 		},
 		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "fakenews",
-			"Sources": [
-				"https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-only/hosts"
-			],
-			"MergedLocation": "./dns/merged/fakenews.txt",
-			"Enabled": true
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-only/hosts"
 		},
 		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "fraud",
-			"Sources": [
-				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/fake.txt"
-			],
-			"MergedLocation": "./dns/merged/fraud.txt",
-			"Enabled": true
+			"Enabled": true,
+			"Source": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/fake.txt"
 		},
 		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "gambling",
-			"Sources": [
-				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/gambling.txt"
-			],
-			"MergedLocation": "./dns/merged/gambling.txt",
-			"Enabled": true
+			"Enabled": true,
+			"Sources": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/gambling.txt"
 		},
 		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "malware",
-			"Sources": [
-				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/hoster.txt",
-				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/dyndns.txt",
-				"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt",
-				"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt",
-				"https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt",
-				"https://v.firebog.net/hosts/Prigent-Crypto.txt",
-				"https://v.firebog.net/hosts/Prigent-Crypto.txt",
-				"https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts",
-				"https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt",
-				"https://phishing.army/download/phishing_army_blocklist_extended.txt",
-				"https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt",
-				"https://v.firebog.net/hosts/RPiList-Malware.txt",
-				"https://v.firebog.net/hosts/RPiList-Phishing.txt",
-				"https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt",
-				"https://raw.githubusercontent.com/AssoEchap/stalkerware-indicators/master/generated/hosts",
-				"https://urlhaus.abuse.ch/downloads/hostfile/"
-			],
-			"MergedLocation": "./dns/merged/malware.txt",
-			"Enabled": true
+			"Enabled": true,
+			"Source": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/hoster.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/dyndns.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://v.firebog.net/hosts/Prigent-Crypto.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://v.firebog.net/hosts/Prigent-Crypto.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://phishing.army/download/phishing_army_blocklist_extended.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://v.firebog.net/hosts/RPiList-Malware.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://v.firebog.net/hosts/RPiList-Phishing.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://raw.githubusercontent.com/AssoEchap/stalkerware-indicators/master/generated/hosts"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "malware",
+			"Enabled": true,
+			"Source": "https://urlhaus.abuse.ch/downloads/hostfile/"
 		}
 	]
 }

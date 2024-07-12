@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/hex"
 	"errors"
 	"log"
 	"os"
@@ -10,7 +11,6 @@ import (
 // takes a string and checks for a number of prefixes and suffixes then removes them
 // and returns the string with trimed spaces
 func toPlainDomain(s string) string {
-
 	switch {
 	case strings.HasPrefix(s, ":"):
 		return ""
@@ -52,4 +52,11 @@ func FindExePath() string {
 	}
 
 	return ex
+}
+
+// Turns the urls to a hexcode
+func encodeListURLToFileName(url string) string {
+	out := make([]byte, hex.EncodedLen(len(url)))
+	_ = hex.Encode(out, []byte(url))
+	return string(out)
 }

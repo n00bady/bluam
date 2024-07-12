@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -16,9 +15,9 @@ type DNSConfig struct {
 	IP                 string   `json:"IP"`
 	Port               int      `json:"Port"`
 	DNSServers         []string `json:"DNSServers"`
-	Sources            []Source `json:"Sources"`
 	DisabledCategories []string `json:"DisabledCategories"`
 	AutoUpdate         bool     `json:"AutoUpdate"`
+	Sources            []Source `json:"Sources"`
 }
 
 type Source struct {
@@ -41,12 +40,6 @@ func LoadConfig(path string) *DNSConfig {
 	}
 
 	return &config
-}
-
-func encodeListURLToFileName(url string) string {
-	out := make([]byte, 0)
-	_ = hex.Encode(out, []byte(url))
-	return string(out)
 }
 
 func UpdateConfigAndMergeTags(config *DNSConfig, path string) {
