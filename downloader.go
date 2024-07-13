@@ -4,8 +4,6 @@ import (
 	"errors"
 	"io"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
 )
 
@@ -13,43 +11,71 @@ import (
 // Gets the category as a string and the url as a string and creates
 // in ./dns/dl_blocklists/ subdirs for each category. Then donwloads the
 // file from the url inside there
-func DownloadBlocklist(dl_path string, url_link string) (err error) {
-	if !CheckPathExists(dl_path) {
-		err := os.MkdirAll(dl_path, os.ModePerm)
-		if err != nil {
-			return err
-		}
-	}
+// func DownloadBlocklist(dl_path string, url_link string) (err error) {
+// 	if !CheckPathExists(dl_path) {
+// 		err := os.MkdirAll(dl_path, os.ModePerm)
+// 		if err != nil {
+// 			return err
+// 		}
+// 	}
+//
+// 	// if it's a filepath then it just get copied to the dl_blocklists/
+// 	// else I assume it's a URL and make a request
+// 	fileName := encodeListURLToFileName(url_link)
+// 	filePath := filepath.Join(dl_path, fileName)
+// 	source, err := os.Create(filePath)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer source.Close()
+//
+// 	client := http.Client{
+// 		CheckRedirect: func(r *http.Request, via []*http.Request) error {
+// 			r.URL.Opaque = r.URL.Path
+// 			return nil
+// 		},
+// 	}
+//
+// 	resp, err := client.Get(url_link)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	defer resp.Body.Close()
+//
+// 	contentType := resp.Header.Get("Content-Type")
+// 	if strings.Contains(contentType, "text/plain") {
+// 		_, err := io.Copy(source, resp.Body)
+// 		return err
+// 	} else {
+// 		err = errors.New("file content not text/plain")
+// 	}
+// 	return nil
+// }
 
-	// if it's a filepath then it just get copied to the dl_blocklists/
-	// else I assume it's a URL and make a request
-	fileName := encodeListURLToFileName(url_link)
-	filePath := filepath.Join(dl_path, fileName)
-	source, err := os.Create(filePath)
-	if err != nil {
-		return err
-	}
-	defer source.Close()
-
+// Takes a URL and returns as string the body content
+func DownloadBlocklist(url string) (string, error) {
 	client := http.Client{
-		CheckRedirect: func(r *http.Request, via []*http.Request) error {
-			r.URL.Opaque = r.URL.Path
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			req.URL.Opaque = req.URL.Path
 			return nil
 		},
 	}
 
-	resp, err := client.Get(url_link)
+	resp, err := client.Get(url)
 	if err != nil {
-		return err
+		return "", err
 	}
 	defer resp.Body.Close()
 
 	contentType := resp.Header.Get("Content-Type")
-	if strings.Contains(contentType, "text/plain") {
-		_, err := io.Copy(source, resp.Body)
-		return err
-	} else {
-		err = errors.New("file content not text/plain")
+	if !strings.Contains(contentType, "text/plain") {
+		return "", errors.New("file content not text/plain")
 	}
-	return nil
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	return string(body), nil
 }

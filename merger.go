@@ -23,7 +23,7 @@ func MergeBlocklists(path string, category string, fileNames []string) {
 	// blocklists tend to have like # and ! for comments/headers and || for all subdomains
 	merge_map := make(map[string]struct{})
 	for _, fN := range fileNames {
-		f, err := os.Open(filepath.Join("./dns/originals", fN))
+		f, err := os.Open(fN)
 		if err != nil {
 			log.Fatal(err)
 		}

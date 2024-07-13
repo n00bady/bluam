@@ -31,11 +31,9 @@ func main() {
 	removeCmd := flag.NewFlagSet("remove", flag.ExitOnError)
 	remCategory := removeCmd.String("c", "", "Choose a category: ads, adult, etc...")
 
-	enableCmd := flag.NewFlagSet("enable", flag.ExitOnError)
-	// enableCategory := enableCmd.String("c", "", "Choose a category to enable.")
+	// enableCmd := flag.NewFlagSet("enable", flag.ExitOnError)
 
-	disableCmd := flag.NewFlagSet("disable", flag.ExitOnError)
-	// disableCategory := disableCmd.String("c", "", "Choose a category to disable.")
+	// disableCmd := flag.NewFlagSet("disable", flag.ExitOnError)
 
 	flag.Usage = func() {
 		fmt.Printf("Usage: %s [command] [args]\n", os.Args[0])
@@ -61,26 +59,28 @@ func main() {
 		addCmd.Parse(os.Args[2:])
 		fmt.Printf("Adding new blocklist in category %s\n", *addCategory)
 		fmt.Println(addCmd.Args())
+		fmt.Println("NOT IMPLEMENTED YET!")
 		// add function
 	case "remove":
 		removeCmd.Parse(os.Args[2:])
 		fmt.Printf("Removing blocklist from category %s\n", *remCategory)
 		fmt.Println(removeCmd.Args())
+		fmt.Println("NOT IMPLEMENTED YET!")
 		// remove function
-	case "enable":
-		enableCmd.Parse(os.Args[2:])
-		fmt.Printf("Enabling category: \n")
-		for _, c := range disableCmd.Args() {
-			fmt.Printf("\t%s", c)
-		}
-		EnableList(config, enableCmd.Args())
-	case "disable":
-		disableCmd.Parse(os.Args[2:])
-		fmt.Printf("Disabling categories: \n")
-		for _, c := range disableCmd.Args() {
-			fmt.Printf("\t%s", c)
-		}
-		DisableList(config, disableCmd.Args())
+	// case "enable":
+	// 	enableCmd.Parse(os.Args[2:])
+	// 	fmt.Printf("Enabling category: \n")
+	// 	for _, c := range disableCmd.Args() {
+	// 		fmt.Printf("\t%s", c)
+	// 	}
+	// 	EnableList(config, enableCmd.Args())
+	// case "disable":
+	// 	disableCmd.Parse(os.Args[2:])
+	// 	fmt.Printf("Disabling categories: \n")
+	// 	for _, c := range disableCmd.Args() {
+	// 		fmt.Printf("\t%s", c)
+	// 	}
+	// 	DisableList(config, disableCmd.Args())
 	default:
 		flag.Usage()
 		os.Exit(1)

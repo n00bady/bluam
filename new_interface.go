@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -46,31 +47,79 @@ func UpdateConfigAndMergeTags(config *DNSConfig, path string) {
 	// do re-merge and config update without download
 }
 
-func UpdateListsAndMergeTags(config *DNSConfig, path string) {
-	// imo it's better to overwrite the old blocklists
-	// rather than delete and then re-download
-	// because if one of the list sources is temporary
-	// or permantly unavailable we can still use the last version
-	dlPath := filepath.Join(path, "originals")
-	for _, l := range config.Sources {
-		DownloadBlocklist(dlPath, l.Source)
+func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
+	categoryMap := make(map[string]map[string]struct{})
+	categories := []string{"adult", "crypto", "socialmedia", "surveillance", "ads", "drugs", "fakenews", "fraud", "gambling", "malware"}
+
+	for _, c := range categories {
+		categoryMap[c] = make(map[string]struct{})
 	}
 
-	// reads all the the files in each category in downloaded blocklists
-	// directory and merge them
-	fmt.Println("Merging blocklists...")
-	categoryMap := make(map[string][]string)
-	for _, v := range config.Sources {
-		sourcePath := encodeListURLToFileName(v.Source)
-		categoryMap[v.Category] = append(categoryMap[v.Category], sourcePath)
+	for _, s := range config.Sources {
+		if s.Source == "" {
+			continue
+		}
+		fmt.Println("Downloading: ", s.Source)
+		responseBody, err := DownloadBlocklist(s.Source)
+		if err != nil {
+			return err
+		}
+
+		lines := strings.Split(responseBody, "\n")
+		for _, l := range lines {
+			categoryMap[s.Category][toPlainDomain(l)] = struct{}{}
+		}
 	}
 
-	mergePath := filepath.Join(path, "merged")
-	for i, v := range categoryMap {
-		MergeBlocklists(mergePath, i, v)
-		fmt.Println("\t", i, "blocklists merged!")
+	err := os.MkdirAll("./dns/merged", os.ModePerm)
+	if err != nil {
+		return err
 	}
+	for cat, cont := range categoryMap {
+		fileName := cat + ".txt"
+		location := filepath.Join("./dns/merged", fileName)
+		f, err := os.Create(location)
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		for line := range cont {
+			_, err := f.WriteString(line + "\n")
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
+
+// func UpdateListsAndMergeTags(config *DNSConfig, path string) {
+// 	// imo it's better to overwrite the old blocklists
+// 	// rather than delete and then re-download
+// 	// because if one of the list sources is temporary
+// 	// or permantly unavailable we can still use the last version
+// 	dlPath := filepath.Join(path, "originals")
+// 	for _, l := range config.Sources {
+// 		DownloadBlocklist(dlPath, l.Source)
+// 	}
+//
+// 	// reads all the the files in each category in downloaded blocklists
+// 	// directory and merge them
+// 	fmt.Println("Merging blocklists...")
+// 	categoryMap := make(map[string][]string)
+// 	for _, v := range config.Sources {
+// 		sourcePath := encodeListURLToFileName(v.Source)
+// 		categoryMap[v.Category] = append(categoryMap[v.Category], sourcePath)
+// 	}
+//
+// 	mergePath := filepath.Join(path, "merged")
+// 	for i, v := range categoryMap {
+// 		MergeBlocklists(mergePath, i, v)
+// 		fmt.Println("\t", i, "blocklists merged!")
+// 	}
+// }
 
 func DisableList(config *DNSConfig, categories []string) {
 	for _, c := range categories {
