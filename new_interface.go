@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 )
@@ -75,7 +76,18 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 	if err != nil {
 		return err
 	}
-	for cat, cont := range categoryMap {
+
+	// Ok this was harder than it had to be :S
+	// Iterate over the map and inner map then create a slice of strings and 
+	// iterate over the inner map and append them then your sort.Strings() to sort them
+	// create the file to be saved and open it for each category and then write it line by line
+	for cat, inMap := range categoryMap {
+		domains := make([]string, 0, len(inMap))
+		for domain := range inMap {
+			domains = append(domains, domain)
+		}
+		sort.Strings(domains)
+
 		fileName := cat + ".txt"
 		location := filepath.Join("./dns/merged", fileName)
 		f, err := os.Create(location)
@@ -84,8 +96,8 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 		}
 		defer f.Close()
 
-		for line := range cont {
-			_, err := f.WriteString(line + "\n")
+		for _, d := range domains {
+			_, err := f.WriteString(d + "\n")
 			if err != nil {
 				return err
 			}
