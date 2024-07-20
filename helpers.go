@@ -50,3 +50,19 @@ func runCmd(name string, args ...string) error {
 
 	return nil
 }
+
+func blocklistsChanged() (bool, error) {
+	cmd := exec.Command("git", "diff-index", "--name-only", "HEAD")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return false, err
+	}
+	lines := strings.Split(string(out), "\n")
+	for _, l := range lines {
+		if strings.Contains(l, "dns") {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}

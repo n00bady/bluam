@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -77,6 +78,7 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 	// iterate over the inner map and append them then your sort.Strings() to sort them
 	// create the file to be saved and open it for each category and then write it line by line
 	for cat, inMap := range categoryMap {
+		fmt.Printf("Merging %s...", cat)
 		domains := make([]string, 0, len(inMap))
 		for domain := range inMap {
 			domains = append(domains, domain)
@@ -97,6 +99,7 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 				return err
 			}
 		}
+		fmt.Println("...done!")
 	}
 
 	err = gitAddCommitPushLists()
@@ -109,7 +112,14 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 
 // assumes you already have git configured properly for the repo
 func gitAddCommitPushLists() error {
-	err := runCmd("git", "add", "dns")
+	changed, err := blocklistsChanged()
+	if err != nil {
+		return err
+	} else if !changed {
+		return errors.New("no changes detected in dns directory, aborting git commit and push")
+	}
+
+	err = runCmd("git", "add", "dns")
 	if err != nil {
 		return err
 	}
