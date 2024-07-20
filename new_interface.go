@@ -100,6 +100,30 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 		}
 	}
 
+	err = gitAddCommitPushLists()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
+// assumes you already have git configured properly for the repo
+func gitAddCommitPushLists() error {
+	err := runCmd("git", "add", "dns")
+	if err != nil {
+		return err
+	}
+
+	err = runCmd("git", "commit", "-m", "Blocklists Update.")
+	if err != nil {
+		return err
+	}
+
+	err = runCmd("git", "push")
+	if err != nil {
+		return err
+	}
+	
+	return nil
+}

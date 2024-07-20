@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -58,3 +59,15 @@ func FindExePath() string {
 	return ex
 }
 
+func runCmd(name string, args ...string) error {
+	cmd := exec.Command(name, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
