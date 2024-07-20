@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"sort"
@@ -29,19 +28,19 @@ type Source struct {
 	Source   string    `json:"Source"`
 }
 
-func LoadConfig(path string) *DNSConfig {
+func LoadConfig(path string) (*DNSConfig, error) {
 	bytes, err := os.ReadFile(path)
 	if err != nil {
-		log.Fatal("Error reading config file: ", err)
+		return nil, err
 	}
 
 	var config DNSConfig
 	err = json.Unmarshal(bytes, &config)
 	if err != nil {
-		log.Fatal("Error unmarshaling json: ", err)
+		return nil, err
 	}
 
-	return &config
+	return &config, nil
 }
 
 func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
@@ -74,7 +73,7 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 	}
 
 	// Ok this was harder than it had to be :S
-	// Iterate over the map and inner map then create a slice of strings and 
+	// Iterate over the map and inner map then create a slice of strings and
 	// iterate over the inner map and append them then your sort.Strings() to sort them
 	// create the file to be saved and open it for each category and then write it line by line
 	for cat, inMap := range categoryMap {
@@ -124,6 +123,6 @@ func gitAddCommitPushLists() error {
 	if err != nil {
 		return err
 	}
-	
+
 	return nil
 }

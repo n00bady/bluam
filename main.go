@@ -3,12 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
-)
-
-var (
-	config     *DNSConfig
-	configPath = "./blocking.json"
 )
 
 // Custom usage message
@@ -21,7 +17,10 @@ const usgMsg = "Commands:\n" +
 
 func main() {
 	// load the config first thing!
-	config = LoadConfig("./blocking.json")
+	config, err := LoadConfig("./blocking.json")
+	if err != nil {
+		log.Fatal("Cannot load config: ", err)
+	}
 
 	updateCmd := flag.NewFlagSet("update", flag.ExitOnError)
 
@@ -30,10 +29,6 @@ func main() {
 
 	removeCmd := flag.NewFlagSet("remove", flag.ExitOnError)
 	remCategory := removeCmd.String("c", "", "Choose a category: ads, adult, etc...")
-
-	// enableCmd := flag.NewFlagSet("enable", flag.ExitOnError)
-
-	// disableCmd := flag.NewFlagSet("disable", flag.ExitOnError)
 
 	flag.Usage = func() {
 		fmt.Printf("Usage: %s [command] [args]\n", os.Args[0])
