@@ -1,8 +1,6 @@
 package main
 
 import (
-	"errors"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -38,25 +36,6 @@ func toPlainDomain(s string) string {
 	}
 
 	return s
-}
-
-// take a directory path and returns false if doesn't exist, true if it does
-func CheckPathExists(path string) bool {
-	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
-		return false
-	}
-
-	return true
-}
-
-// Finds the executalbe path
-func FindExePath() string {
-	ex, err := os.Executable()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return ex
 }
 
 func runCmd(name string, args ...string) error {
