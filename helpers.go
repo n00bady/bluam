@@ -28,8 +28,6 @@ func toPlainDomain(s string) string {
 		s = strings.TrimSpace(s[len("0.0.0.0"):])
 	case strings.HasPrefix(s, "127.0.0.1"):
 		s = strings.TrimSpace(s[len("127.0.0.1"):])
-	case strings.HasSuffix(s, "^"):
-		s = strings.TrimSpace(s[0 : len(s)-1])
 	default:
 		return strings.TrimSpace(s)
 	}
@@ -60,9 +58,3 @@ func FindExePath() string {
 	return ex
 }
 
-// Turns the urls to a hexcode
-// func encodeListURLToFileName(url string) string {
-// 	out := make([]byte, hex.EncodedLen(len(url)))
-// 	_ = hex.Encode(out, []byte(url))
-// 	return string(out)
-// }

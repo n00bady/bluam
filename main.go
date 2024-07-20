@@ -67,20 +67,6 @@ func main() {
 		fmt.Println(removeCmd.Args())
 		fmt.Println("NOT IMPLEMENTED YET!")
 		// remove function
-	// case "enable":
-	// 	enableCmd.Parse(os.Args[2:])
-	// 	fmt.Printf("Enabling category: \n")
-	// 	for _, c := range disableCmd.Args() {
-	// 		fmt.Printf("\t%s", c)
-	// 	}
-	// 	EnableList(config, enableCmd.Args())
-	// case "disable":
-	// 	disableCmd.Parse(os.Args[2:])
-	// 	fmt.Printf("Disabling categories: \n")
-	// 	for _, c := range disableCmd.Args() {
-	// 		fmt.Printf("\t%s", c)
-	// 	}
-	// 	DisableList(config, disableCmd.Args())
 	default:
 		flag.Usage()
 		os.Exit(1)
