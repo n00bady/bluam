@@ -113,9 +113,11 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 // assumes you already have git configured properly for the repo
 func gitAddCommitPushLists() error {
 	changed, err := blocklistsChanged()
+	fmt.Println("Changed: ", changed)
 	if err != nil {
 		return err
-	} else if !changed {
+	}
+	if !changed {
 		return errors.New("no changes detected in dns directory, aborting git commit and push")
 	}
 

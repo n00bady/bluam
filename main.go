@@ -40,7 +40,10 @@ func main() {
 	// just running the binary updates and merges the blocklists no questions asked
 	if len(os.Args) < 2 {
 		fmt.Printf("No arguments, default behaviour is to update all blocklists!\n\n")
-		UpdateListsAndMergeTags(config, "./dns")
+		err = UpdateListsAndMergeTags(config, "./dns")
+		if err != nil {
+			log.Println(err)
+		}
 		os.Exit(0)
 	}
 
@@ -49,7 +52,10 @@ func main() {
 	case "update":
 		updateCmd.Parse(os.Args[2:])
 		fmt.Println("Updating the blocklists...")
-		UpdateListsAndMergeTags(config, "./dns")
+		err = UpdateListsAndMergeTags(config, "./dns")
+		if err != nil {
+			log.Println(err)
+		}
 	case "add":
 		addCmd.Parse(os.Args[2:])
 		fmt.Printf("Adding new blocklist in category %s\n", *addCategory)

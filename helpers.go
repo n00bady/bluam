@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -52,16 +53,14 @@ func runCmd(name string, args ...string) error {
 }
 
 func blocklistsChanged() (bool, error) {
-	cmd := exec.Command("git", "diff-index", "--name-only", "HEAD")
+	cmd := exec.Command("git", "diff", "dns")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		return false, err
 	}
-	lines := strings.Split(string(out), "\n")
-	for _, l := range lines {
-		if strings.Contains(l, "dns") {
-			return true, nil
-		}
+
+	if len(out) > 0 {
+		return true, nil
 	}
 
 	return false, nil
