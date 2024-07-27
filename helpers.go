@@ -1,9 +1,9 @@
 package main
 
 import (
-	"errors"
-	"log"
+	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -28,8 +28,6 @@ func toPlainDomain(s string) string {
 		s = strings.TrimSpace(s[len("0.0.0.0"):])
 	case strings.HasPrefix(s, "127.0.0.1"):
 		s = strings.TrimSpace(s[len("127.0.0.1"):])
-	case strings.HasSuffix(s, "^"):
-		s = strings.TrimSpace(s[0 : len(s)-1])
 	default:
 		return strings.TrimSpace(s)
 	}
@@ -41,28 +39,29 @@ func toPlainDomain(s string) string {
 	return s
 }
 
-// take a directory path and returns false if doesn't exist, true if it does
-func CheckPathExists(path string) bool {
-	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
-		return false
-	}
+func runCmd(name string, args ...string) error {
+	cmd := exec.Command(name, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 
-	return true
-}
-
-// Finds the executalbe path
-func FindExePath() string {
-	ex, err := os.Executable()
+	err := cmd.Run()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	return ex
+	return nil
 }
 
-// Turns the urls to a hexcode
-// func encodeListURLToFileName(url string) string {
-// 	out := make([]byte, hex.EncodedLen(len(url)))
-// 	_ = hex.Encode(out, []byte(url))
-// 	return string(out)
-// }
+func blocklistsChanged() (bool, error) {
+	cmd := exec.Command("git", "diff", "dns")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return false, err
+	}
+
+	if len(out) > 0 {
+		return true, nil
+	}
+
+	return false, nil
+}

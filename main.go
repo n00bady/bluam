@@ -3,12 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
-)
-
-var (
-	config     *DNSConfig
-	configPath = "./blocking.json"
 )
 
 // Custom usage message
@@ -21,7 +17,10 @@ const usgMsg = "Commands:\n" +
 
 func main() {
 	// load the config first thing!
-	config = LoadConfig("./blocking.json")
+	config, err := LoadConfig("./blocking.json")
+	if err != nil {
+		log.Fatal("Cannot load config: ", err)
+	}
 
 	updateCmd := flag.NewFlagSet("update", flag.ExitOnError)
 
@@ -30,10 +29,6 @@ func main() {
 
 	removeCmd := flag.NewFlagSet("remove", flag.ExitOnError)
 	remCategory := removeCmd.String("c", "", "Choose a category: ads, adult, etc...")
-
-	// enableCmd := flag.NewFlagSet("enable", flag.ExitOnError)
-
-	// disableCmd := flag.NewFlagSet("disable", flag.ExitOnError)
 
 	flag.Usage = func() {
 		fmt.Printf("Usage: %s [command] [args]\n", os.Args[0])
@@ -45,7 +40,10 @@ func main() {
 	// just running the binary updates and merges the blocklists no questions asked
 	if len(os.Args) < 2 {
 		fmt.Printf("No arguments, default behaviour is to update all blocklists!\n\n")
-		UpdateListsAndMergeTags(config, "./dns")
+		err = UpdateListsAndMergeTags(config, "./dns")
+		if err != nil {
+			log.Println(err)
+		}
 		os.Exit(0)
 	}
 
@@ -54,7 +52,10 @@ func main() {
 	case "update":
 		updateCmd.Parse(os.Args[2:])
 		fmt.Println("Updating the blocklists...")
-		UpdateListsAndMergeTags(config, "./dns")
+		err = UpdateListsAndMergeTags(config, "./dns")
+		if err != nil {
+			log.Println(err)
+		}
 	case "add":
 		addCmd.Parse(os.Args[2:])
 		fmt.Printf("Adding new blocklist in category %s\n", *addCategory)
@@ -67,20 +68,6 @@ func main() {
 		fmt.Println(removeCmd.Args())
 		fmt.Println("NOT IMPLEMENTED YET!")
 		// remove function
-	// case "enable":
-	// 	enableCmd.Parse(os.Args[2:])
-	// 	fmt.Printf("Enabling category: \n")
-	// 	for _, c := range disableCmd.Args() {
-	// 		fmt.Printf("\t%s", c)
-	// 	}
-	// 	EnableList(config, enableCmd.Args())
-	// case "disable":
-	// 	disableCmd.Parse(os.Args[2:])
-	// 	fmt.Printf("Disabling categories: \n")
-	// 	for _, c := range disableCmd.Args() {
-	// 		fmt.Printf("\t%s", c)
-	// 	}
-	// 	DisableList(config, disableCmd.Args())
 	default:
 		flag.Usage()
 		os.Exit(1)

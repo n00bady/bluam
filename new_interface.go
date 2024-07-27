@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"sort"
@@ -29,23 +29,19 @@ type Source struct {
 	Source   string    `json:"Source"`
 }
 
-func LoadConfig(path string) *DNSConfig {
+func LoadConfig(path string) (*DNSConfig, error) {
 	bytes, err := os.ReadFile(path)
 	if err != nil {
-		log.Fatal("Error reading config file: ", err)
+		return nil, err
 	}
 
 	var config DNSConfig
 	err = json.Unmarshal(bytes, &config)
 	if err != nil {
-		log.Fatal("Error unmarshaling json: ", err)
+		return nil, err
 	}
 
-	return &config
-}
-
-func UpdateConfigAndMergeTags(config *DNSConfig, path string) {
-	// do re-merge and config update without download
+	return &config, nil
 }
 
 func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
@@ -78,10 +74,11 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 	}
 
 	// Ok this was harder than it had to be :S
-	// Iterate over the map and inner map then create a slice of strings and 
+	// Iterate over the map and inner map then create a slice of strings and
 	// iterate over the inner map and append them then your sort.Strings() to sort them
 	// create the file to be saved and open it for each category and then write it line by line
 	for cat, inMap := range categoryMap {
+		fmt.Printf("Merging %s...", cat)
 		domains := make([]string, 0, len(inMap))
 		for domain := range inMap {
 			domains = append(domains, domain)
@@ -102,89 +99,42 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 				return err
 			}
 		}
+		fmt.Println("...done!")
+	}
+
+	err = gitAddCommitPushLists()
+	if err != nil {
+		return err
 	}
 
 	return nil
 }
 
-// func UpdateListsAndMergeTags(config *DNSConfig, path string) {
-// 	// imo it's better to overwrite the old blocklists
-// 	// rather than delete and then re-download
-// 	// because if one of the list sources is temporary
-// 	// or permantly unavailable we can still use the last version
-// 	dlPath := filepath.Join(path, "originals")
-// 	for _, l := range config.Sources {
-// 		DownloadBlocklist(dlPath, l.Source)
-// 	}
-//
-// 	// reads all the the files in each category in downloaded blocklists
-// 	// directory and merge them
-// 	fmt.Println("Merging blocklists...")
-// 	categoryMap := make(map[string][]string)
-// 	for _, v := range config.Sources {
-// 		sourcePath := encodeListURLToFileName(v.Source)
-// 		categoryMap[v.Category] = append(categoryMap[v.Category], sourcePath)
-// 	}
-//
-// 	mergePath := filepath.Join(path, "merged")
-// 	for i, v := range categoryMap {
-// 		MergeBlocklists(mergePath, i, v)
-// 		fmt.Println("\t", i, "blocklists merged!")
-// 	}
-// }
-
-func DisableList(config *DNSConfig, categories []string) {
-	for _, c := range categories {
-		for i, l := range config.Sources {
-			if l.Category == c {
-				fmt.Println("Found category: ", c, "Disabling...")
-				config.Sources[i].Enabled = false
-				bytes, err := json.MarshalIndent(config, "", "\t")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				f, err := os.Create(configPath)
-				if err != nil {
-					log.Fatal(err)
-				}
-				defer f.Close()
-				_, err = f.Write(bytes)
-				if err != nil {
-					log.Fatal(err)
-				}
-				fmt.Println(c, "disabled succefully!")
-			}
-		}
+// assumes you already have git configured properly for the repo
+func gitAddCommitPushLists() error {
+	changed, err := blocklistsChanged()
+	fmt.Println("Changed: ", changed)
+	if err != nil {
+		return err
 	}
-}
-
-func EnableList(config *DNSConfig, categories []string) {
-	for _, c := range categories {
-		for i, l := range config.Sources {
-			if l.Category == c {
-				fmt.Println("Found category: ", c, "Enabling...")
-				config.Sources[i].Enabled = true
-				bytes, err := json.MarshalIndent(config, "", "\t")
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				f, err := os.Create(configPath)
-				if err != nil {
-					log.Fatal(err)
-				}
-				defer f.Close()
-				_, err = f.Write(bytes)
-				if err != nil {
-					log.Fatal(err)
-				}
-				fmt.Println(c, "enabled succefully!")
-			}
-		}
+	if !changed {
+		return errors.New("no changes detected in dns directory, aborting git commit and push")
 	}
-}
 
-// keyb1nd makes this
-func LoadLists(config *DNSConfig) {
+	err = runCmd("git", "add", "dns")
+	if err != nil {
+		return err
+	}
+
+	err = runCmd("git", "commit", "-m", "Blocklists Update.")
+	if err != nil {
+		return err
+	}
+
+	err = runCmd("git", "push")
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
