@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 // Custom usage message
@@ -15,7 +17,16 @@ const usgMsg = "Commands:\n" +
 	"\t remove -c <category> <blocklists> Removes the blocklists.\n" +
 	"The blocklists must be given with their full Path or URL!\n"
 
+var WEBHOOK = ""
+
 func main() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		panic(err)
+	}
+
+	WEBHOOK = os.Getenv("WEBHOOK")
+
 	// load the config first thing!
 	config, err := LoadConfig("./blocking.json")
 	if err != nil {

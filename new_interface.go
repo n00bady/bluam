@@ -4,28 +4,23 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime/debug"
 	"sort"
 	"strings"
 	"time"
 )
 
 type DNSConfig struct {
-	LogBlocked         bool     `json:"LogBlocked"`
-	LogAll             bool     `json:"LogAll"`
-	IP                 string   `json:"IP"`
-	Port               int      `json:"Port"`
-	DNSServers         []string `json:"DNSServers"`
-	DisabledCategories []string `json:"DisabledCategories"`
-	AutoUpdate         bool     `json:"AutoUpdate"`
-	Sources            []Source `json:"Sources"`
+	Sources []Source `json:"Sources"`
 }
 
 type Source struct {
 	Updated  time.Time `json:"Updated"`
 	Category string    `json:"Category"`
-	Enabled  bool      `json:"Enabled"`
 	Source   string    `json:"Source"`
 }
 
@@ -44,7 +39,16 @@ func LoadConfig(path string) (*DNSConfig, error) {
 	return &config, nil
 }
 
-func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
+func UpdateListsAndMergeTags(config *DNSConfig, path string) (err error) {
+	defer func() {
+		r := recover()
+		if r != nil {
+			log.Println(r, string(debug.Stack()))
+		}
+		if err != nil {
+			SEND_ADMIN_ALERT("UpdateListsAndMerge > err: " + err.Error())
+		}
+	}()
 	categoryMap := make(map[string]map[string]struct{})
 	categories := []string{"adult", "crypto", "socialmedia", "surveillance", "ads", "drugs", "fakenews", "fraud", "gambling", "malware"}
 
@@ -57,18 +61,34 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 			continue
 		}
 		fmt.Println("Downloading: ", s.Source)
-		responseBody, err := DownloadBlocklist(s.Source)
+		var rb string
+		rb, err = DownloadBlocklist(s.Source)
 		if err != nil {
 			return err
 		}
 
-		lines := strings.Split(responseBody, "\n")
+		lines := strings.Split(rb, "\n")
 		for _, l := range lines {
 			categoryMap[s.Category][toPlainDomain(l)] = struct{}{}
 		}
 	}
 
-	err := os.MkdirAll("./dns/merged", os.ModePerm)
+	cmd := exec.Command("rm", "-R", "./dns/merged.bak")
+	var out []byte
+	out, err = cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println("RMOUT:", string(out))
+		// return err
+	}
+
+	cmd = exec.Command("cp", "-R", "./dns/merged", "./dns/merged.bak")
+	_, err = cmd.CombinedOutput()
+	if err != nil {
+		fmt.Println("CPOUT:", string(out))
+		return err
+	}
+
+	err = os.MkdirAll("./dns/merged", os.ModePerm)
 	if err != nil {
 		return err
 	}
@@ -87,14 +107,15 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) error {
 
 		fileName := cat + ".txt"
 		location := filepath.Join("./dns/merged", fileName)
-		f, err := os.Create(location)
+		var f *os.File
+		f, err = os.Create(location)
 		if err != nil {
 			return err
 		}
 		defer f.Close()
 
 		for _, d := range domains {
-			_, err := f.WriteString(d + "\n")
+			_, err = f.WriteString(d + "\n")
 			if err != nil {
 				return err
 			}
