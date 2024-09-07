@@ -9,7 +9,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// Custom usage message
 const usgMsg = "Commands:\n" +
 	"\t Running without arguments Updates and Merges the blocklists.\n" +
 	"\t update Updates and Merges the blocklists.\n" +
