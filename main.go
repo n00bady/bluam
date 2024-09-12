@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"log"
 	"os"
-
 	"github.com/joho/godotenv"
 )
 
-const usgMsg = "Commands:\n" +
-	"\t Running without arguments Updates and Merges the blocklists.\n" +
-	"\t update Updates and Merges the blocklists.\n" +
+const usgMsg = "Running without arguments Updates, Merges, Commits and Pushes the blocklists.\n\n" +
+	"Commands:\n\n" +
+	"\t update Updates, Merges, Commits and Pushes the blocklists.\n" +
+	"\t\t -noPush stops it from Commiting and Pushing.\n" +
+	"\n" +
 	"\t add -c <category> <blocklists> Adds the following blocklists to the config.\n" +
 	"\t remove -c <category> <blocklists> Removes the blocklists.\n" +
+	"\n" +
 	"The blocklists must be given with their full Path or URL!\n"
 
 var WEBHOOK = ""
