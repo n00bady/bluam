@@ -115,17 +115,15 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) (err error) {
 		defer f.Close()
 
 		for _, d := range domains {
+			if d == "" {
+				continue
+			}
 			_, err = f.WriteString(d + "\n")
 			if err != nil {
 				return err
 			}
 		}
 		fmt.Println("...done!")
-	}
-
-	err = gitAddCommitPushLists()
-	if err != nil {
-		return err
 	}
 
 	return nil

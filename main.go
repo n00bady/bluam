@@ -33,6 +33,7 @@ func main() {
 	}
 
 	updateCmd := flag.NewFlagSet("update", flag.ExitOnError)
+	noPush := updateCmd.Bool("noPush", false, "Don't push the blocklists.")
 
 	addCmd := flag.NewFlagSet("add", flag.ExitOnError)
 	addCategory := addCmd.String("c", "", "Choose a category: ads, adult, etc...")
@@ -65,6 +66,14 @@ func main() {
 		err = UpdateListsAndMergeTags(config, "./dns")
 		if err != nil {
 			log.Println(err)
+		}
+		if !*noPush {
+			err := gitAddCommitPushLists()
+			if err != nil {
+				log.Println(err)
+			}
+		} else {
+			fmt.Println("Finished downloading, no commit and push...")
 		}
 	case "add":
 		addCmd.Parse(os.Args[2:])
