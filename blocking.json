@@ -13,7 +13,7 @@
 		{
 			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "crypto",
-			"Source": ""
+			"Source": "https://media.githubusercontent.com/media/Decripto-org/crypto-scam-blacklist/main/crypto_scam_blocklist.txt"
 		},
 		{
 			"Updated": "2006-01-02T15:04:05Z",
@@ -23,7 +23,37 @@
 		{
 			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "surveillance",
-			"Source": ""
+			"Source": "https://blocklist.sefinek.net/generated/v1/0.0.0.0/tracking-and-telemetry/0Zinc/easyprivacy.fork.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "surveillance",
+			"Source": "https://blocklist.sefinek.net/generated/v1/0.0.0.0/tracking-and-telemetry/ente-dev/tv.fork.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "surveillance",
+			"Source":  "https://blocklist.sefinek.net/generated/v1/0.0.0.0/tracking-and-telemetry/frogeye/firstparty-trackers-hosts.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "surveillance",
+			"Source": "https://blocklist.sefinek.net/generated/v1/0.0.0.0/tracking-and-telemetry/MajkiIT/adguard-mobile-host.fork.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "surveillance",
+			"Source": "https://blocklist.sefinek.net/generated/v1/0.0.0.0/tracking-and-telemetry/mitchellkrogza/INACTIVE.fork.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "surveillance",
+			"Source": "https://blocklist.sefinek.net/generated/v1/0.0.0.0/tracking-and-telemetry/neodevpro/host.fork.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "surveillance",
+			"Source": "https://blocklist.sefinek.net/generated/v1/0.0.0.0/tracking-and-telemetry/quidsup/trackers-hosts.fork.txt"
 		},
 		{
 			"Updated": "2006-01-02T15:04:05Z",
@@ -98,7 +128,7 @@
 		{
 			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "drugs",
-			"Source": ""
+			"Source": "https://blocklist.sefinek.net/generated/v1/0.0.0.0/drugs/blocklistproject/drugs.fork.txt"
 		},
 		{
 			"Updated": "2006-01-02T15:04:05Z",
