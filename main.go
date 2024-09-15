@@ -21,12 +21,14 @@ const usgMsg = "Running without arguments Updates, Merges, Commits and Pushes th
 var WEBHOOK = ""
 
 func main() {
+
 	err := godotenv.Load(".env")
 	if err != nil {
-		panic(err)
+		log.Println("Cannot load .env: ", err)
+	} else {
+		WEBHOOK = os.Getenv("WEBHOOK")
 	}
 
-	WEBHOOK = os.Getenv("WEBHOOK")
 
 	// load the config first thing!
 	config, err := LoadConfig("./blocking.json")

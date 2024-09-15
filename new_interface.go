@@ -45,7 +45,7 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) (err error) {
 		if r != nil {
 			log.Println(r, string(debug.Stack()))
 		}
-		if err != nil {
+		if err != nil && WEBHOOK != "" {
 			SEND_ADMIN_ALERT("UpdateListsAndMerge > err: " + err.Error())
 		}
 	}()
