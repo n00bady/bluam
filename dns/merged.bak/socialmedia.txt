@@ -1,3 +1,4 @@
+
 0-act.channel.facebook.com
 0-edge-chat.facebook.com
 0.beta.facebook.com
@@ -1382,7 +1383,6 @@ lm.facebook.com
 lms.linkedin.com
 lntecc.m.facebook.com
 lntinfotech.m.facebook.com
-lobi.co
 log-va.tiktokv.com
 log-va.tiktokv.com.edgekey.net
 log.myspace.com
@@ -1423,7 +1423,6 @@ marketing.linkedin.com
 marketing.twitter.com
 match.com
 mbasic.facebook.com
-mbga.jp
 mcs-sg.tiktokv.com
 mcs-va-useast2a.tiktokv.com
 mcs-va.tiktokv.com
@@ -1533,8 +1532,6 @@ mid4.linkedin.com
 mietra-de.m.facebook.com
 miroglio.m.facebook.com
 mix.linkedin.com
-mixch.tv
-mixi.jp
 mm.m.facebook.com
 mme.whatsapp.net
 mme6.whatsapp.net
