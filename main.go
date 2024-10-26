@@ -54,7 +54,7 @@ func main() {
 
 	// just running the binary updates and merges the blocklists no questions asked
 	if len(os.Args) < 2 {
-		fmt.Printf("No arguments, default behaviour is to update all blocklists!\n\n")
+		fmt.Printf("No arguments, default behaviour is to update all blocklists and not git push!\n\n")
 		err = UpdateListsAndMergeTags(config, "./dns")
 		if err != nil {
 			log.Println(err)
