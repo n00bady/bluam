@@ -127,6 +127,11 @@
 		},
 		{
 			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "ads",
+			"Source": "https://easylist.to/easylist/easylist.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "drugs",
 			"Source": "https://blocklist.sefinek.net/generated/v1/0.0.0.0/drugs/blocklistproject/drugs.fork.txt"
 		},
@@ -143,7 +148,17 @@
 		{
 			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "gambling",
-			"Sources": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/gambling.txt"
+			"Source": "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/gambling.txt"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "gambling",
+			"Source": "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-only/hosts"
+		},
+		{
+			"Updated": "2006-01-02T15:04:05Z",
+			"Category": "gambling",
+			"Source": "https://raw.githubusercontent.com/blocklistproject/Lists/refs/heads/master/gambling.txt"
 		},
 		{
 			"Updated": "2006-01-02T15:04:05Z",

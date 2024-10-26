@@ -27,4 +27,5 @@ It will update merge and then push, assuming you have git configured correctly, 
 - https://github.com/Spam404/lists
 - https://github.com/AssoEchap/stalkerware-indicators
 - https://urlhaus.abuse.ch
+- https://github.com/blocklistproject/Lists
 - And others... maybe
