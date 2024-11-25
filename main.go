@@ -5,30 +5,30 @@ import (
 	"fmt"
 	"log"
 	"os"
+
 	"github.com/joho/godotenv"
 )
 
 const usgMsg = "Running without arguments Updates, Merges, Commits and Pushes the blocklists.\n\n" +
 	"Commands:\n\n" +
 	"\t update Updates, Merges, Commits and Pushes the blocklists.\n" +
-	"\t\t -noPush stops it from Commiting and Pushing.\n" +
+	"\t\t -noPush Stops it from Commiting and Pushing.\n" +
 	"\n" +
 	"\t add -c <category> <blocklists> Adds the following blocklists to the config.\n" +
-	"\t remove -c <category> <blocklists> Removes the blocklists.\n" +
+	"\t remove <blocklist> Removes this list.\n" +
+	"\t remove -c <category> Removes all lists of the category.\n" +
 	"\n" +
 	"The blocklists must be given with their full Path or URL!\n"
 
 var WEBHOOK = ""
 
 func main() {
-
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Println("Cannot load .env: ", err)
 	} else {
 		WEBHOOK = os.Getenv("WEBHOOK")
 	}
-
 
 	// load the config first thing!
 	config, err := LoadConfig("./blocking.json")
@@ -43,7 +43,7 @@ func main() {
 	addCategory := addCmd.String("c", "", "Choose a category: ads, adult, etc...")
 
 	removeCmd := flag.NewFlagSet("remove", flag.ExitOnError)
-	remCategory := removeCmd.String("c", "", "Choose a category: ads, adult, etc...")
+	remCategory := removeCmd.Bool("c", false, "Choose a category: ads, adult, etc...")
 
 	flag.Usage = func() {
 		fmt.Printf("Usage: %s [command] [args]\n", os.Args[0])
@@ -83,14 +83,27 @@ func main() {
 		addCmd.Parse(os.Args[2:])
 		fmt.Printf("Adding new blocklist in category %s\n", *addCategory)
 		fmt.Println(addCmd.Args())
-		fmt.Println("NOT IMPLEMENTED YET!")
-		// add function
+
+		err := AddList(*addCategory, addCmd.Arg(0), config)
+		if err != nil {
+			log.Println(err)
+		}
 	case "remove":
 		removeCmd.Parse(os.Args[2:])
-		fmt.Printf("Removing blocklist from category %s\n", *remCategory)
-		fmt.Println(removeCmd.Args())
-		fmt.Println("NOT IMPLEMENTED YET!")
-		// remove function
+
+		if *remCategory {
+			fmt.Println("Removing all lists from category ", *remCategory)
+			err := RemoveCategory(removeCmd.Arg(0), config)
+			if err != nil {
+				log.Println(err)
+			}
+		} else {
+			fmt.Println("Removing ", removeCmd.Arg(0))
+			err := RemoveList(removeCmd.Arg(0), config)
+			if err != nil {
+				log.Println(err)
+			}
+		}
 	default:
 		flag.Usage()
 		os.Exit(1)

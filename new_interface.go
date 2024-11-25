@@ -157,3 +157,75 @@ func gitAddCommitPushLists() error {
 
 	return nil
 }
+
+func AddList(category, source string, config *DNSConfig) error {
+	var newList Source
+
+	newList.Updated = time.Now()
+	newList.Category = category
+	newList.Source = source
+
+	config.Sources = append(config.Sources, newList)
+
+	err := updateConfigFile(config)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func RemoveList(searchStr string, config *DNSConfig) error {
+	fmt.Println("Searching... ")
+	for i, s := range config.Sources {
+		if s.Source == searchStr {
+			fmt.Println("FOUND!!!")
+			config.Sources = append(
+				config.Sources[:i], config.Sources[i+1:]...)
+			err := updateConfigFile(config)
+			if err != nil {
+				return err
+			}
+
+			fmt.Println(s.Source, " removed!")
+
+			return nil
+		}
+	}
+
+	return errors.New("the Source doesn't exists")
+}
+
+func RemoveCategory(category string, config *DNSConfig) error {
+	fmt.Println("Searching... ")
+	for i, s := range config.Sources {
+		if s.Category == category {
+			config.Sources = append(config.Sources[:i], config.Sources[i+1:]...)
+		}
+	}
+	err := updateConfigFile(config)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(category, " removed!")
+
+	return nil
+}
+
+func updateConfigFile(config *DNSConfig) error {
+	f, err := os.OpenFile("./blocking.json", os.O_RDWR|os.O_TRUNC, 0644)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	jason, err := json.MarshalIndent(config, "", "	")
+	if err != nil {
+		return err
+	}
+
+	f.Write(jason)
+
+	return nil
+}
