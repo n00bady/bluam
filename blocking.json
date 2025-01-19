@@ -127,11 +127,6 @@
 		},
 		{
 			"Updated": "2006-01-02T15:04:05Z",
-			"Category": "ads",
-			"Source": "https://easylist.to/easylist/easylist.txt"
-		},
-		{
-			"Updated": "2006-01-02T15:04:05Z",
 			"Category": "drugs",
 			"Source": "https://blocklist.sefinek.net/generated/v1/0.0.0.0/drugs/blocklistproject/drugs.fork.txt"
 		},
