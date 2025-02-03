@@ -9,7 +9,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime/debug"
-	"sort"
 	"strings"
 	"time"
 )
@@ -85,7 +84,7 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) (err error) {
 	_, err = cmd.CombinedOutput()
 	if err != nil {
 		fmt.Println("CPOUT:", string(out))
-		return err
+		// return err
 	}
 
 	err = os.MkdirAll("./dns/merged", os.ModePerm)
@@ -93,17 +92,36 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) (err error) {
 		return err
 	}
 
+	// filter uniques across categories
+
+	fmt.Println("starting de-dupping.. this will take some time..")
+	start := time.Now()
+	dupeCount := 0
+	un := make(map[string]struct{})
+	for _, inMap := range categoryMap {
+		for d := range inMap {
+			_, ok := un[d]
+			if ok {
+				dupeCount++
+				delete(inMap, d)
+			} else {
+				un[d] = struct{}{}
+			}
+		}
+	}
+	fmt.Println("FILTERING TIME:", time.Since(start).Minutes(), "DUPE count:", dupeCount)
+
 	// Ok this was harder than it had to be :S
 	// Iterate over the map and inner map then create a slice of strings and
 	// iterate over the inner map and append them then your sort.Strings() to sort them
 	// create the file to be saved and open it for each category and then write it line by line
 	for cat, inMap := range categoryMap {
 		fmt.Printf("Merging %s...", cat)
-		domains := make([]string, 0, len(inMap))
-		for domain := range inMap {
-			domains = append(domains, domain)
-		}
-		sort.Strings(domains)
+		// domains := make([]string, 0, len(inMap))
+		// for domain := range inMap {
+		// 	domains = append(domains, domain)
+		// }
+		// sort.Strings(domains)
 
 		fileName := cat + ".txt"
 		location := filepath.Join("./dns/merged", fileName)
@@ -114,7 +132,7 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) (err error) {
 		}
 		defer f.Close()
 
-		for _, d := range domains {
+		for d := range inMap {
 			if d == "" {
 				continue
 			}
@@ -214,7 +232,7 @@ func RemoveCategory(category string, config *DNSConfig) error {
 }
 
 func updateConfigFile(config *DNSConfig) error {
-	f, err := os.OpenFile("./blocking.json", os.O_RDWR|os.O_TRUNC, 0644)
+	f, err := os.OpenFile("./blocking.json", os.O_RDWR|os.O_TRUNC, 0o644)
 	if err != nil {
 		return err
 	}
