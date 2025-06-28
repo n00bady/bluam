@@ -1,10 +1,8 @@
 package main
 
 import (
-	"errors"
 	"io"
 	"net/http"
-	"strings"
 )
 
 // Takes a URL and returns as string the body content
@@ -22,10 +20,10 @@ func DownloadBlocklist(url string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	contentType := resp.Header.Get("Content-Type")
-	if !strings.Contains(contentType, "text/plain") {
-		return "", errors.New("file content not text/plain")
-	}
+	// contentType := resp.Header.Get("Content-Type")
+	// if !strings.Contains(contentType, "text/plain") {
+	// return "", errors.New("file content not text/plain")
+	// }
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {

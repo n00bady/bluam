@@ -63,7 +63,8 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) (err error) {
 		var rb string
 		rb, err = DownloadBlocklist(s.Source)
 		if err != nil {
-			return err
+			fmt.Println(err)
+			continue
 		}
 
 		lines := strings.Split(rb, "\n")
