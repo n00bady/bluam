@@ -124,7 +124,7 @@ func UpdateListsAndMergeTags(config *DNSConfig, path string) (err error) {
 		// }
 		// sort.Strings(domains)
 
-		fileName := cat + ".txt"
+		fileName := cat
 		location := filepath.Join("./dns/merged", fileName)
 		var f *os.File
 		f, err = os.Create(location)
